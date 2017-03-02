@@ -11,8 +11,6 @@ public interface DataDownloadListener {
 
 	public void onComplete();
 
-	public void onCancel();
-	
 	public String getFileName();
 	
 	public int getFileSize();

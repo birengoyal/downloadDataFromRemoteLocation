@@ -26,10 +26,9 @@ public class DefaultDataDownloadListener implements DataDownloadListener {
       System.out.println("\n" + new File(fName).getName() + " downloaded");
    }
 
-   public void onCancel() {
-
-   }
-
+   
+   // progress bar that shows the progress of the downloading file 
+   // "\r" Does not work in eclipse IDE so shows inappropriate progress bar  
    void updateProgress(double progressPercentage) {
       final int width = 50;
 
@@ -49,7 +48,6 @@ public class DefaultDataDownloadListener implements DataDownloadListener {
    }
 
    public int getFileSize() {
-
       return size;
    }
 }

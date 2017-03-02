@@ -3,7 +3,8 @@ Overview
 This downloader is a simple java library, which downloads multiple files from different protocols and shows the progress of each download.
 
 It support almost all protocols inc http, ftp, https, sftp etc.
-This library is multi threaded which can download multiple files in parallel. In input only URL and TARGET LOCATION(where file need to be stored) is required. It will fetch the file name from ULR and will download it.  
+This library is multi threaded which can download multiple files in parallel and delete the file if it has partial data in final location. In input only URL and TARGET LOCATION(where file need to be stored) is required. It will fetch the file name from ULR and will download it.  
+
 
 It includes Code with Test
 Below is the example of code for test

@@ -28,7 +28,7 @@ public class DirectDataDownloader implements Runnable {
    public DirectDataDownloader(int poolSize) {
       this.poolSize = poolSize;
    }
-
+   // Download the file in chunk using multithreading 
    protected class DirectDownloadThread extends Thread {
       private final BlockingQueue<DataDownloadTask> tasks;
 
@@ -63,6 +63,7 @@ public class DirectDataDownloader implements Runnable {
                listener.onComplete();
             }
             close(is, os);
+            //delete the file if any exception found 
          } catch (Exception e) {
             new File(dt.getListeners().get(0).getFileName()).delete();
             e.printStackTrace();
