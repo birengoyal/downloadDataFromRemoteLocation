@@ -1,17 +1,14 @@
 package com.agoda.filedownloaderTests;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.agoda.filedownloader.downloader.DirectDownloader;
-import com.agoda.filedownloader.downloader.DownloadListener;
-import com.agoda.filedownloader.downloader.DownloadTask;
+import com.agoda.filedownloader.downloader.DataDownloadTask;
+import com.agoda.filedownloader.downloader.DirectDataDownloader;
 
 /**
  * @author Biren
@@ -19,57 +16,23 @@ import com.agoda.filedownloader.downloader.DownloadTask;
  */
 @RunWith(JUnit4.class)
 public class SimpleTest {
-	DirectDownloader dd = new DirectDownloader();
+   DirectDataDownloader directDataDownloader = new DirectDataDownloader();
 
-	@Test
-	public void testSimple() throws MalformedURLException, FileNotFoundException, InterruptedException {
-		final Thread t = new Thread(dd);
-		final String file = "ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt";
-		final String f = "/home/local/JASPERINDIA/biren.goyal/Music/" + file.substring(file.lastIndexOf('/') + 1);
+   @Test
+   public void testSimple() throws InterruptedException, IOException {
+      final Thread thread = new Thread(directDataDownloader);
+      final String file = "http://dldir1.qq.com/qqfile/qq/QQ2013/QQ2013Beta2.exe";
+     
+      final String target = "...SET TARGET LOCATION...";
+      DataDownloadTask dataDownloadTask = new DataDownloadTask(new URL(file), target);
 
-		DownloadTask dt = new DownloadTask(new URL(file), new FileOutputStream(f)).addListener(new DownloadListener() {
-			int size;
+      directDataDownloader.download(dataDownloadTask);
+      thread.start();
+      thread.join();
+   }
 
-			public void onUpdate(int bytes, int totalDownloaded) {
-				updateProgress((double) totalDownloaded / size);
-			}
-
-			public void onStart(String fname, int size) {
-				System.out.println("Downloading " + fname + " of size " + size);
-				this.size = size;
-				updateProgress(0);
-			}
-
-			public void onComplete() {
-				System.out.println("\n" + f + " downloaded");
-			}
-
-			public void onCancel() {
-
-			}
-		});
-
-		dd.download(dt);
-		t.start();
-		t.join();
-	}
-
-	void updateProgress(double progressPercentage) {
-		final int width = 50;
-
-		System.out.print("\r[");
-		int i = 0;
-		for (; i <= (int) (progressPercentage * width); i++) {
-			System.out.print(".");
-		}
-		for (; i < width; i++) {
-			System.out.print(" ");
-		}
-		System.out.print("]");
-	}
-
-	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, InterruptedException {
-		SimpleTest st = new SimpleTest();
-		st.testSimple();
-	}
+   public static void main(String[] args) throws InterruptedException, IOException {
+      SimpleTest st = new SimpleTest();
+      st.testSimple();
+   }
 }
